@@ -17,3 +17,5 @@ slacker mwotton mycoolslack automated_alerts "deployed `git log -1 --format='%h'
 
 or something similar.
 
+
+This will probably be pushed to hackage when https://hackage.haskell.org/package/slack builds with a modern stack resolver and i can delete the vendored dep.
