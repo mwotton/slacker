@@ -22,8 +22,8 @@ import Network.Slack.User (User(..), userFromId)
 import Network.Slack.Channel (Channel(..))
 
 import Data.Time.Clock (UTCTime, getCurrentTime, addUTCTime)
-import Data.Time.Format (parseTime, formatTime)
-import System.Locale (defaultTimeLocale)
+import Data.Time.Format (parseTime, formatTime, defaultTimeLocale)
+-- import System.Locale (defaultTimeLocale)
 
 import qualified Data.Traversable as T
 import qualified Data.Map as M
@@ -61,7 +61,7 @@ data MessageRaw = MessageRaw {
 instance FromJSON MessageRaw where
   parseJSON = parseStrippedPrefix "_message"
 
-instance SlackResponseName [MessageRaw] where 
+instance SlackResponseName [MessageRaw] where
   slackResponseName _ = "messages"
 
 -- | A nicer version of MessageRaw, with the user id converted to a User
@@ -70,7 +70,7 @@ data Message = Message {
   messageUser :: Maybe User,
   messageText :: String,
   messageTimeStamp :: TimeStamp
-  } deriving (Show, Eq) 
+  } deriving (Show, Eq)
 
 -- | Converts a MessageRaw into a Message
 convertRawMessage :: MessageRaw -> Slack Message
@@ -78,7 +78,7 @@ convertRawMessage (MessageRaw mtype muid mtext mts) = do
   -- This converts a Maybe (Slack User) to a Slack (Maybe User)
   user <- T.sequence (userFromId <$> muid)
   return (Message mtype user mtext mts)
-   
+
 -- | List of the past n messages in the given channel
 -- n must be no greater than 1000
 channelHistory :: Int -> Channel -> Slack [Message]
@@ -128,8 +128,8 @@ channelHistoryRecent n chan = do
     -- Convert to NominalDiffTime
     nSecsAgo = fromInteger (- (toInteger n))
   mapM convertRawMessage =<< request "channels.history" args
-    
-                              
+
+
 -- | Retrieves the messages by the given user
 messagesByUser :: User -> [Message] -> [Message]
 messagesByUser user = filter (byUser . messageUser)
