@@ -19,6 +19,8 @@ executable slacker
   main-is:             Main.hs
   -- other-modules:
   -- other-extensions:
-  build-depends:       base >=4.7 && <4.9, slack, directory
+  build-depends:       base >=4.7 && <4.9, slack-api, directory
+                     , mtl, transformers, text
+  ghc-options: -threaded -rtsopts
   -- hs-source-dirs:
   default-language:    Haskell2010
